@@ -29,6 +29,11 @@ function App() {
 
   return (<div className="App">
     <Auth />
+<div>
+  <input placeholder="Movie title..."/>
+  <input placeholder="Release Date..."/>
+</div>
+
     <div>
       {movieList.map((movie) => (
         <div>
