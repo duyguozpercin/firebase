@@ -31,7 +31,7 @@ function App() {
     <Auth />
 <div>
   <input placeholder="Movie title..."/>
-  <input placeholder="Release Date..."/>
+  <input placeholder="Release Date..." type="number"/>
 </div>
 
     <div>
