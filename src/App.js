@@ -12,10 +12,17 @@ function App() {
 
   useEffect(() => {
     const getMovieList = async () => {
-      // Read the data
-      //set the movie list
-      const dsata = await getDocs(moviesCollectionRef);
+     
+      try {
+      const data = await getDocs(moviesCollectionRef);
+      console.log(data);
+    
+    } catch (err) {
+      console.error(err);
     }
+    };
+
+    getMovieList();
   }, [])
   
   return (<div className="App">
