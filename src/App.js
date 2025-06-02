@@ -9,6 +9,12 @@ import React, { useEffect, useState } from 'react';
 function App() {
   const [movieList, setMovieList] = useState([]);
 
+  //New movie State
+  const [newMovieTitle, setNewMovieTitle] = useState("");
+  const [newReleaseDate, setNewReleaseDate] = useState("");
+  const [isNewMovieOscar, setIsNewMovieOscar] = useState("");
+
+
   const moviesCollectionRef = collection(db, 'movies');
 
   useEffect(() => {
@@ -34,6 +40,7 @@ function App() {
   <input placeholder="Release Date..." type="number"/>
   <input type="checkbox"/>
   <label>Received an Oscar?</label>
+  <button>Submit Movie</button>
 </div>
 
     <div>
