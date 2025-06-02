@@ -32,6 +32,8 @@ function App() {
 <div>
   <input placeholder="Movie title..."/>
   <input placeholder="Release Date..." type="number"/>
+  <input type="checkbox"/>
+  <label>Received an Oscar?</label>
 </div>
 
     <div>
