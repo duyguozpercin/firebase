@@ -2,7 +2,7 @@ import './App.css';
 import { Auth } from "./components/auth";
 import { } from './config/firebase';
 import { db } from './config/firebase';
-import { getDocs, collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 
 
@@ -13,6 +13,9 @@ function App() {
   const [newMovieTitle, setNewMovieTitle] = useState("");
   const [newReleaseDate, setNewReleaseDate] = useState(0);
   const [isNewMovieOscar, setIsNewMovieOscar] = useState(true);
+
+  //Update Title State
+  const [updateTitle, setUpdatedTitle] = useState("");
 
 
   const moviesCollectionRef = collection(db, 'movies');
@@ -57,6 +60,12 @@ function App() {
     getMovieList();
   };
 
+  const updateMovieTitle = async (id) => {
+    const movieDoc = doc(db, 'movies', id);
+    await deleteDoc(movieDoc);
+    getMovieList();
+  };
+
   return (<div className="App">
     <Auth />
     <div>
@@ -77,6 +86,9 @@ function App() {
           <p>Date: {movie.releaseDate}</p>
 
           <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
+
+          <input placeholder="new title..." onchange={(e) => setUpdatedTitle(e.target.value)}/>
+          <button onClick={() => updateMovieTitle(movie.id)}>Update Title</button>
 
         </div>
       ))}
