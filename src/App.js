@@ -2,7 +2,7 @@ import './App.css';
 import { Auth } from "./components/auth";
 import { } from './config/firebase';
 import { db } from './config/firebase';
-import { getDocs, collection, addDoc } from 'firebase/firestore';
+import { getDocs, collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 
 
@@ -17,20 +17,20 @@ function App() {
 
   const moviesCollectionRef = collection(db, 'movies');
 
-  const getMovieList = async () => {
-
-    try {
-      const data = await getDocs(moviesCollectionRef);
-      const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      setMovieList(filteredData);
-
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  
 
   useEffect(() => {
+    const getMovieList = async () => {
 
+      try {
+        const data = await getDocs(moviesCollectionRef);
+        const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setMovieList(filteredData);
+  
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
     getMovieList();
   }, []);
@@ -46,6 +46,11 @@ function App() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const deleteMovie = async (id) => {
+const movieDoc = doc(db, 'movies', id);
+    await deleteDoc(movieDoc);
   };
 
   return (<div className="App">
@@ -66,6 +71,7 @@ function App() {
         <div>
           <h1 style={{ color: movie.receivedAnOscar ? "green" : "red" }}>{movie.title}</h1>
           <p>Date: {movie.releaseDate}</p>
+          <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
 
         </div>
       ))}
