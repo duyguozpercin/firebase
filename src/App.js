@@ -17,40 +17,44 @@ function App() {
 
   const moviesCollectionRef = collection(db, 'movies');
 
-  
+  const getMovieList = async () => {
+
+    try {
+      const data = await getDocs(moviesCollectionRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+      setMovieList(filteredData);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const getMovieList = async () => {
 
-      try {
-        const data = await getDocs(moviesCollectionRef);
-        const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setMovieList(filteredData);
-  
-      } catch (err) {
-        console.error(err);
-      }
-    };
 
     getMovieList();
   }, []);
 
   const onSubmitMovie = async () => {
     try {
-      await addDoc(moviesCollectionRef, { 
-        title: newMovieTitle, 
-        releaseDate: newReleaseDate, 
-        receivedAnOscar: isNewMovieOscar });
-
-        getMovieList();
+      await addDoc(moviesCollectionRef, {
+        title: newMovieTitle,
+        releaseDate: newReleaseDate,
+        receivedAnOscar: isNewMovieOscar
+      });
+      getMovieList();
     } catch (err) {
       console.error(err);
     }
   };
 
   const deleteMovie = async (id) => {
-const movieDoc = doc(db, 'movies', id);
+    const movieDoc = doc(db, 'movies', id);
     await deleteDoc(movieDoc);
+    getMovieList();
   };
 
   return (<div className="App">
@@ -71,6 +75,7 @@ const movieDoc = doc(db, 'movies', id);
         <div>
           <h1 style={{ color: movie.receivedAnOscar ? "green" : "red" }}>{movie.title}</h1>
           <p>Date: {movie.releaseDate}</p>
+
           <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
 
         </div>
